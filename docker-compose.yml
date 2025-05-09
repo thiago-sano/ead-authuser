@@ -10,3 +10,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=banco123
       - POSTGRES_DB=ead-authuser
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
