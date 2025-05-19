@@ -1,11 +1,17 @@
 package br.com.ead.authuser.services.impl;
 
+import br.com.ead.authuser.dtos.UserRecordDto;
+import br.com.ead.authuser.enums.UserStatus;
+import br.com.ead.authuser.enums.UserType;
 import br.com.ead.authuser.exceptions.NotFoundException;
 import br.com.ead.authuser.models.UserModel;
 import br.com.ead.authuser.repositories.UserRepository;
 import br.com.ead.authuser.services.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +24,6 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public List<UserModel> findAll() {
@@ -37,5 +42,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UserModel userModel) {
         userRepository.delete(userModel);
+    }
+
+    @Override
+    public UserModel registerUser(UserRecordDto userRecordDto) {
+        var userModel = new UserModel();
+        BeanUtils.copyProperties(userRecordDto, userModel);
+        userModel.setUserStatus(UserStatus.ACTIVE);
+        userModel.setUserType(UserType.USER);
+        userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return userRepository.save(userModel);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
