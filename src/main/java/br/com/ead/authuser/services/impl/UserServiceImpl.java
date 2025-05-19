@@ -1,5 +1,6 @@
 package br.com.ead.authuser.services.impl;
 
+import br.com.ead.authuser.exceptions.NotFoundException;
 import br.com.ead.authuser.models.UserModel;
 import br.com.ead.authuser.repositories.UserRepository;
 import br.com.ead.authuser.services.UserService;
@@ -26,7 +27,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserModel> findById(UUID userId) {
-        return userRepository.findById(userId);
+        Optional<UserModel> userModelOptional = userRepository.findById(userId);
+        if(userModelOptional.isEmpty()){
+            throw new NotFoundException("Error: User not found");
+        }
+        return userModelOptional;
     }
 
     @Override
