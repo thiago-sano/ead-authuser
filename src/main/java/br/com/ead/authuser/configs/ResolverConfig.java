@@ -14,7 +14,7 @@ public class ResolverConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         var pageableResolver = new PageableHandlerMethodArgumentResolver();
-        pageableResolver.setFallbackPageable(PageRequest.of(0, 2));
+        pageableResolver.setFallbackPageable(PageRequest.of(0, 10));
         argumentResolvers.add(pageableResolver);
     }
 }
