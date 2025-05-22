@@ -1,0 +1,18 @@
+version: '4.39.0'
+
+services:
+  postgres:
+    container_name: ead_postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=banco123
+      - POSTGRES_DB=ead-authuser
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
